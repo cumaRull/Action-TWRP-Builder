@@ -10,7 +10,11 @@ on:
       MANIFEST_BRANCH:
         description: 'MANIFEST_BRANCH'
         required: true
-        default: 'twrp-12.1'
+        default: ''
+        type: choice
+        options:
+        - twrp-12.1
+        - twrp-11
       DEVICE_TREE_URL:
         description: 'DEVICE_TREE_URL'
         required: true
