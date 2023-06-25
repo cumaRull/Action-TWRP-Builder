@@ -6,7 +6,12 @@ on:
       MANIFEST_URL:
         description: 'MANIFEST_URL (if want to use SSH keys, use git@github.com:XXXXX)'
         required: true
-        default: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp'
+        default: ''
+        type: choice
+        options: 
+        - https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp
+        - https://github.com/SHRP/manifest
+        - https://github.com/PitchBlackRecoveryProject/manifest_pb
       MANIFEST_BRANCH:
         description: 'MANIFEST_BRANCH'
         required: true
@@ -15,6 +20,10 @@ on:
         options:
         - twrp-12.1
         - twrp-11
+        - shrp-12.1
+        - v3_11.0
+        - android-12.1
+        - android-11.0
       DEVICE_TREE_URL:
         description: 'DEVICE_TREE_URL'
         required: true
