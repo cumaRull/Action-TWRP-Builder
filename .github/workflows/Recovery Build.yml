@@ -54,6 +54,10 @@ on:
         description: 'BUILD_TARGET'
         required: true
         default: 'recovery'
+      VERSION_NAME:
+      description: 'VERSION_NAME'
+      required: true
+      default: 'Enter the recovery version'
 
 jobs:
   build:
@@ -131,7 +135,7 @@ jobs:
 
     - name: Recovery versions
       run: |
-        export TW_DEVICE_VERSION :=  ismasrull
+        export TW_DEVICE_VERSION := ${{ github.event.inputs.VERSION_NAME }}
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Clone common tree
@@ -179,5 +183,6 @@ jobs:
           Manifest: ${{ github.event.inputs.MANIFEST_BRANCH }}
           Device: ${{ github.event.inputs.DEVICE_NAME }}
           Target: ${{ github.event.inputs.BUILD_TARGET }}.img
+          Version: ${{ github.event.inputs.VERSION_NAME }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
