@@ -132,7 +132,7 @@ jobs:
 
     - name: Recovery version
       run: |
-        export TW_DEVICE_VERSION := masrull
+        export TW_DEVICE_VERSION : masrull
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Clone common tree
