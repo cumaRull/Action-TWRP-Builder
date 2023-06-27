@@ -130,11 +130,6 @@ jobs:
         git clone ${{ github.event.inputs.DEVICE_TREE_URL }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-    - name: Recovery version
-      run: |
-        export TW_DEVICE_VERSION : masrull
-      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
-
     - name: Clone common tree
       if: |
         github.event.inputs.COMMON_TREE_URL != null
