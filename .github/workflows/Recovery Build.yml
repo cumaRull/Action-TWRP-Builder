@@ -54,10 +54,7 @@ on:
         description: 'BUILD_TARGET'
         required: true
         default: 'recovery'
-      VERSION_NAME:
-      description: 'VERSION_NAME'
-      required: true
-      default: 'Enter the recovery version'
+      
 
 jobs:
   build:
@@ -76,7 +73,6 @@ jobs:
         echo "Device Path: ${{ github.event.inputs.DEVICE_PATH }}"
         echo "Device Name: ${{ github.event.inputs.DEVICE_NAME }}"
         echo "Makefile Name: ${{ github.event.inputs.MAKEFILE_NAME }}"
-        echo "Version Name: ${{ github.event.inputs.VERSION_NAME }}"
         echo "Build Target: ${{ github.event.inputs.BUILD_TARGET }}.img"
         echo "::endgroup::"
  
@@ -136,7 +132,7 @@ jobs:
 
     - name: Recovery version
       run: |
-        export TW_DEVICE_VERSION := ${{ github.event.inputs.VERSION_NAME }}
+        export TW_DEVICE_VERSION := masrull
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Clone common tree
