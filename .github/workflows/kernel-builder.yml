@@ -37,15 +37,11 @@ jobs:
     steps:
     - name: Display Run Parameters
       run: |
-
-echo "::group::User Environment Variables"
-
-echo "Kernel URL: ${{ github.event.inputs.KERNEL_URL }}"
-      echo "Kernel Branch: ${{ github.event.inputs.KERNEL_BRANCH }}"
-      echo "Link gcc arrch64: ${{ github.event.inputs.LINK_GCC_AARCH64 }}"
-      echo "Link gcc arm: ${{ github.event.inputs.LINK_GCC_ARM }}"
-      echo "Kernel Branch: ${{ github.event.inputs.LINK_CLANG }}"
-      echo "::endgroup::"
+ echo "Kernel URL: ${{ github.event.inputs.KERNEL_URL }}"
+ echo "Kernel Branch: ${{ github.event.inputs.KERNEL_BRANCH }}"
+ echo "Link gcc arrch64: ${{ github.event.inputs.LINK_GCC_AARCH64 }}"
+ echo "Link gcc arm: ${{ github.event.inputs.LINK_GCC_ARM }}"
+ echo "Kernel Branch: ${{ github.event.inputs.LINK_CLANG }}"
       
           # You might want to Checkout your repo first, but not mandatory
     - name: Check Out
