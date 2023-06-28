@@ -8,27 +8,27 @@ on:
   required: true
   default: 'https://github.com/Rem01Gaming/liquid_kernel_realme_even'
   
-  KERNEL_BRANCH:
-  description: 'KERNEL_BRANCH'
-  required: true
-  default: 'OSS-RUI2'
+KERNEL_BRANCH:
+description: 'kernel branch'
+required: true
+default: 'OSS-RUI2'
   
-  LINK_GCC_AARCH64:
+LINK_GCC_AARCH64:
         description: 'LINK_GCC_AARCH64'
         required: true
         default: 'https://github.com/EternalX-project/aarch64-linux-gnu.git'
         
-  LINK_GCC_ARM:
+LINK_GCC_ARM:
         description: 'LINK_GCC_ARM'
         required: true
         default: 'https://github.com/EternalX-project/arm-linux-gnueabi.git'
         
-  LINK_CLANG:
+LINK_CLANG:
         description: 'LINK_CLANG'
         required: true
         default: 'https://github.com/SayuZX/android_prebuilts_clang_host_linux-x86_clang-r437112.git'
         
-  jobs:
+jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
     runs-on: ubuntu-20.04
@@ -37,8 +37,10 @@ on:
     steps:
     - name: Display Run Parameters
       run: |
-      echo "::group::User Environment Variables"
-      echo "Kernel URL: ${{ github.event.inputs.KERNEL_URL }}"
+
+echo "::group::User Environment Variables"
+
+echo "Kernel URL: ${{ github.event.inputs.KERNEL_URL }}"
       echo "Kernel Branch: ${{ github.event.inputs.KERNEL_BRANCH }}"
       echo "Link gcc arrch64: ${{ github.event.inputs.LINK_GCC_AARCH64 }}"
       echo "Link gcc arm: ${{ github.event.inputs.LINK_GCC_ARM }}"
