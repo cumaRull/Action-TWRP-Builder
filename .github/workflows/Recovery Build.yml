@@ -158,7 +158,7 @@ jobs:
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
       with:
-        swap-size-gb: 25
+        swap-size-gb: 12
 
     - name: Building recovery
       run: |
