@@ -12,6 +12,7 @@ on:
         - https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp
         - https://github.com/SHRP/manifest
         - https://github.com/PitchBlackRecoveryProject/manifest_pb
+        - https://gitlab.com/OrangeFox/sync
       MANIFEST_BRANCH:
         description: 'MANIFEST_BRANCH'
         required: true
@@ -25,6 +26,8 @@ on:
         - v3_10.0
         - android-12.1
         - android-11.0
+        - 12.1
+        - 11.0
       DEVICE_TREE_URL:
         description: 'DEVICE_TREE_URL'
         required: true
@@ -117,8 +120,8 @@ jobs:
         mkdir workspace
         cd workspace
         echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
-        git config --global user.name "Nico170420"
-        git config --global user.email "b170420nc@gmail.com"
+        git config --global user.name "cumaRull"
+        git config --global user.email "rulsmods@gmail.com"
         repo init --depth=1 -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
       id: pwd
           
