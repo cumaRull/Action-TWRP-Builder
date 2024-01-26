@@ -95,7 +95,7 @@ jobs:
         sudo apt update
         sudo apt -y upgrade
         sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses5 python3
-
+        sudo apt-get install jq -y &> /dev/null
     
     - name: Install OpenJDK
       uses: actions/setup-java@v3
@@ -109,6 +109,14 @@ jobs:
       with:
           ssh-private-key: |
               ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Notify in Telegram
+      run: |
+            TgNotify() {
+              curl -s -X POST "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendMessage" -d chat_id="${{ secrets.TG_CHAT_ID }}" \
+              -d parse_mode=Markdown \
+              -d text="Using Manifest: <b> ${{ github.event.inputs.MANIFEST_URL }}</b>Manifest Branch: ${{ github.event.inputs.MANIFEST_BRANCH }}" \
+              -d disable_web_page_preview=true        
 
     - name: Install repo
       run: |
@@ -172,6 +180,9 @@ jobs:
         ${{ github.event.inputs.EXPORT_CODE }}
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+
+    
+
 
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
