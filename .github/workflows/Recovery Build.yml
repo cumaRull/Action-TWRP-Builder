@@ -182,6 +182,13 @@ jobs:
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
+    - name: Test Upload to Telegram
+      run: |
+              curl -F document=workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendDocument" \
+              -F chat_id="${{ secrets.TG_CHAT_ID }}" \
+              -F parse_mode=html \
+              -F disable_web_page_preview=true 
+              
     - name: Build finished Notify in Telegram
       run: |
              
@@ -191,7 +198,6 @@ jobs:
               -d parse_mode=html \
               -d disable_web_page_preview=true 
               
-
 
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
