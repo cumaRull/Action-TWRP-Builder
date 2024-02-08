@@ -86,8 +86,8 @@ jobs:
       uses: actions/checkout@v3
     # Cleanup The Actions Workspace Using Custom Composite Run Actions
     
-  #  - name: Cleanup
-  #    uses: rokibhasansagar/slimhub_actions@main
+    - name: Cleanup
+      uses: rokibhasansagar/slimhub_actions@main
 
       # That's it! Now use your normal steps
     - name: Prepare the environment
@@ -182,6 +182,8 @@ jobs:
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         mkdir Folder
         cp out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img ~/Folder
+        cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ ~/Folder
+        zip -r9 ${{ github.event.inputs.DEVICE_NAME }}.zip
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     
@@ -194,23 +196,15 @@ jobs:
               -d text="<b>Build Finished!!</b>Device Tree:${{ github.event.inputs.DEVICE_TREE_URL }}%0ADevice Name: <b>${{ github.event.inputs.DEVICE_NAME }}</b>%0ADevice Tree Branch: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}%0ABuild Target: <b>${{ github.event.inputs.BUILD_TARGET }}</b>" \
               -d parse_mode=html \
               -d disable_web_page_preview=true 
-           
-           
-    - name: zipping
-      run: |
-           
-           cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ ~/Folder
-           zip -r9 ${{ github.event.inputs.DEVICE_NAME }}.zip
-      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
-
+     
     - name: Push To telegram
       run: |
             cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ ~/Folder
             push1=${{ github.event.inputs.DEVICE_NAME }}.zip
              
              curl -F document=@$push1 "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendDocument" \
-              -d chat_id="${{ secrets.TG_CHAT_ID }}" \
-              -d text="<b>Build Finished!!</b>%0A Pushing \
-              -d parse_mode=html \
-              -d disable_web_page_preview=true
+              -F chat_id="${{ secrets.TG_CHAT_ID }}" \
+              -F caption="<b>Build Finished!!</b>%0A Pushing \
+              -F parse_mode=html \
+              -F disable_web_page_preview=true
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
