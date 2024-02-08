@@ -180,26 +180,13 @@ jobs:
         export ALLOW_MISSING_DEPENDENCIES=true
         ${{ github.event.inputs.EXPORT_CODE }}
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
+        mkdir Folder
+        cp workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img ~/Folder
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-    - name: Upload to Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: | 
-          workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img
-          workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.zip
-          workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*vendor*.img
-        name: ${{ github.event.inputs.DEVICE_NAME }}-${{ github.run_id }}
-        tag_name: ${{ github.run_id }}
-        body: |
-          Manifest: ${{ github.event.inputs.MANIFEST_BRANCH }}
-          Device: ${{ github.event.inputs.DEVICE_NAME }}
-          Device Tree: ${{ github.event.inputs.DEVICE_TREE_URL }}
-          Target: ${{ github.event.inputs.BUILD_TARGET }}.img
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
               
-    - name: Build finished Notify in Telegram
+    - name: Buildname finished Notify in Telegram
       run: |
              
               curl -s -X POST "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendMessage" \
@@ -207,6 +194,21 @@ jobs:
               -d text="<b>Build Finished!!</b>Device Tree:${{ github.event.inputs.DEVICE_TREE_URL }}%0ADevice Name: <b>${{ github.event.inputs.DEVICE_NAME }}</b>%0ADevice Tree Branch: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}%0ABuild Target: <b>${{ github.event.inputs.BUILD_TARGET }}</b>" \
               -d parse_mode=html \
               -d disable_web_page_preview=true 
-              
+           
+           
+    - name: zipping
+      run: |
+           cd ~/Folder
+           zip -r9 ${{ github.event.inputs.DEVICE_NAME }}.zip
 
+    - name: Push To telegram
+      run: |
+            cd ~/Folder
+            push1=${{ github.event.inputs.DEVICE_NAME }}.zip
+             
+             curl -F document=@$push1 "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendDocument" \
+              -d chat_id="${{ secrets.TG_CHAT_ID }}" \
+              -d text="<b>Build Finished!!</b>%0A Pushing \
+              -d parse_mode=html \
+              -d disable_web_page_preview=true     
     
