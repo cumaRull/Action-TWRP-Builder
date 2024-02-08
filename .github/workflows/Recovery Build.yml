@@ -181,7 +181,7 @@ jobs:
         ${{ github.event.inputs.EXPORT_CODE }}
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         mkdir Folder
-        cp workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img ~/Folder
+        cp out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img ~/Folder
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     
