@@ -180,10 +180,10 @@ jobs:
         export ALLOW_MISSING_DEPENDENCIES=true
         ${{ github.event.inputs.EXPORT_CODE }}
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
-        cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/
-        mkdir Folder
+        
+        mkdir -p Folder
         cp out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img ~/Folder
-        cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/Folder
+        cd Folder
         zip -r9 ${{ github.event.inputs.DEVICE_NAME }}.zip
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
@@ -200,7 +200,7 @@ jobs:
      
     - name: Push To telegram
       run: |
-            cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/Folder
+            cd Folder
             push1=${{ github.event.inputs.DEVICE_NAME }}.zip
              
              curl -F document=@$push1 "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendDocument" \
