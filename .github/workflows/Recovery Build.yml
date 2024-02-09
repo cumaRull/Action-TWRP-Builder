@@ -183,7 +183,7 @@ jobs:
         
         
         cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/
-        zip -r9 ${{ github.event.inputs.DEVICE_NAME }}.zip
+        zip -r9 ${{ github.event.inputs.DEVICE_NAME }}.zip *
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     
