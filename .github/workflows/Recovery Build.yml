@@ -179,7 +179,7 @@ jobs:
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         ${{ github.event.inputs.EXPORT_CODE }}
-        lunch ${{ github.event.inputs.MAKEFILE_NAME }}-user && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
+        lunch ${{ github.event.inputs.MAKEFILE_NAME }}-userdebug && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         
         
       
