@@ -179,14 +179,10 @@ jobs:
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         ${{ github.event.inputs.EXPORT_CODE }}
-        lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
+        lunch ${{ github.event.inputs.MAKEFILE_NAME }}-user && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         
         
-        cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/
-        mkdir -p RecoveryImageFile
-        cp out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img ~/RecoveryImageFile
-        cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/RecoveryImageFile
-        zip -r9 ${{ github.event.inputs.DEVICE_NAME }}.zip *
+      
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     
@@ -200,14 +196,30 @@ jobs:
               -d parse_mode=html \
               -d disable_web_page_preview=true 
      
-    - name: Push To telegram
-      run: |
-            cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/RecoveryImageFile
-            push1=${{ github.event.inputs.DEVICE_NAME }}.zip
-             
-             curl -F document=@$push1 "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendDocument" \
-              -F chat_id="${{ secrets.TG_CHAT_ID }}" \
-              -F caption="<b>Build Finished!!</b>%0A Pushing \
-              -F parse_mode=html \
-              -F disable_web_page_preview=true
-      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+#   - name: Push To telegram
+#      run: |
+#           cd out/target/product/${{ github.event.inputs.DEVICE_NAME }}/RecoveryImageFile
+#           push1=${{ github.event.inputs.DEVICE_NAME }}.zip
+#            
+#             curl -F document=@$push1 "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendDocument" \
+#              -F chat_id="${{ secrets.TG_CHAT_ID }}" \
+#             -F caption="<b>Build Finished!!</b>%0A Pushing \
+#              -F parse_mode=html \
+#              -F disable_web_page_preview=true
+#      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: | 
+          workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img
+          workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.zip
+          workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*vendor*.img
+        name: ${{ github.event.inputs.DEVICE_NAME }}-${{ github.run_id }}
+        tag_name: ${{ github.run_id }}
+        body: |
+          Manifest: ${{ github.event.inputs.MANIFEST_BRANCH }}
+          Device: ${{ github.event.inputs.DEVICE_NAME }}
+          Target: ${{ github.event.inputs.BUILD_TARGET }}.img
+          Source: ${{ github.event.inputs.DEVICE_TREE_URL }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
