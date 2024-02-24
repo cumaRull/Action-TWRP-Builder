@@ -10,7 +10,7 @@ on:
         type: choice
         options: 
         - https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp
-        - https://github.com/SHRP/manifest
+        - https://github.com/SHRP-Reborn/manifest
         - https://github.com/PitchBlackRecoveryProject/manifest_pb
         - https://github.com/minimal-manifest-twrp/platform_manifest_twrp_lineageos
       MANIFEST_BRANCH:
@@ -19,8 +19,8 @@ on:
         default: ''
         type: choice
         options:
-        - twrp-14.1
         - twrp-12.1
+        - twrp-14.1
         - twrp-11
         - shrp-12.1
         - v3_11.0
