@@ -1,3 +1,6 @@
+[![Recovery Build](https://github.com/cumaRull/Action-TWRP-Builder/actions/workflows/Recovery%20Build.yml/badge.svg?event=workflow_run)](https://github.com/cumaRull/Action-TWRP-Builder/actions/workflows/Recovery%20Build.yml)
+
+
 # Use Github Action to compile Recovery
 
 - Support TWRP, SHRP compilation and production
