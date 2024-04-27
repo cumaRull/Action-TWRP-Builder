@@ -179,6 +179,10 @@ jobs:
       run: |
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
+        export USE_CCACHE=1 
+        export CCACHE_COMPRESS=1 
+        export CCACHE_MAXSIZE=50G
+        export TZ=Asia/Jakarta
         ${{ github.event.inputs.EXPORT_CODE }}
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         
