@@ -145,6 +145,7 @@ jobs:
     - name: Clone device tree
       run: |
         git clone ${{ github.event.inputs.DEVICE_TREE_URL }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
+        git clone --recurse-submodules https://github.com/yuzumi86/kernel_realme_even.git -b OSS-RUI2 ./kernel/realme/even
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Clone common tree
